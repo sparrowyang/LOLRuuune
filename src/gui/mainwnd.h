@@ -37,8 +37,21 @@ private:
     QWidget m_mainWidget;
     QLineEdit m_lindEdit;
     QVBoxLayout m_hLayout;
-    QPushButton m_btn;
-    QRadioButton m_radio;
+    QHBoxLayout m_vLayoutTitle;
+    QComboBox m_comboBox;
+
+    QPushButton m_newBtn;
+    QPushButton m_delBtn;
+    QPushButton m_setBtn;
+    QPushButton m_exitBtn;
+
+    QAction m_quit;
+
+    QRadioButton m_radio11;
+    QRadioButton m_radio12;
+    QRadioButton m_radio13;
+    QRadioButton m_radio21;
+    QButtonGroup m_btnGruop1;
     QLabel m_label;
-    Lcu m_lcu;
+    // Lcu m_lcu;
 };
