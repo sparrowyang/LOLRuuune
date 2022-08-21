@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/qss">
+        <file>ubuntu.qss</file>
+    </qresource>
+    <qresource prefix="/img">
+        <file>ouc.png</file>
+    </qresource>
+</RCC>

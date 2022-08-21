@@ -1,8 +1,8 @@
 #pragma once
 #include "../lcu/lcu.h"
 
-#include <QtWidgets>
 #include <QString>
+#include <QtWidgets>
 /*
 [______________v] [O][_/][+][X]
 [_____v]  ||   [_____v]             //主系副系不重复
@@ -17,41 +17,43 @@
 [x x x]
 [Apply]
 */
-class Mainwnd : public QMainWindow, public std::enable_shared_from_this<Mainwnd>
-{
+class Mainwnd : public QMainWindow,
+	public std::enable_shared_from_this<Mainwnd> {
 private:
-    /* data */
+	/* data */
 public:
-    Mainwnd(/* args */);
-    ~Mainwnd();
-    QString LoadQss();
+	Mainwnd(/* args */);
+	~Mainwnd();
+	QString LoadQss();
 
 protected:
-    void ConnectSignals();
+	void ConnectSignals();
 
 private slots:
-    void OnClick();
+	void OnClick();
 
 private:
-    QSystemTrayIcon m_trayIcon;
-    QWidget m_mainWidget;
-    QLineEdit m_lindEdit;
-    QVBoxLayout m_hLayout;
-    QHBoxLayout m_vLayoutTitle;
-    QComboBox m_comboBox;
+	QIcon m_icon;
+	QSystemTrayIcon m_trayIcon;
+	QWidget m_mainWidget;
+	QLineEdit m_lindEdit;
+	QVBoxLayout m_hLayout;
+	QHBoxLayout m_vLayoutTitle;
+	QComboBox m_comboBox;
 
-    QPushButton m_newBtn;
-    QPushButton m_delBtn;
-    QPushButton m_setBtn;
-    QPushButton m_exitBtn;
+	QPushButton m_newBtn;
+	QPushButton m_delBtn;
+	QPushButton m_setBtn;
+	QPushButton m_saveBtn;
+	QPushButton m_exitBtn;
 
-    QAction m_quit;
+	QAction m_quit;
 
-    QRadioButton m_radio11;
-    QRadioButton m_radio12;
-    QRadioButton m_radio13;
-    QRadioButton m_radio21;
-    QButtonGroup m_btnGruop1;
-    QLabel m_label;
-    // Lcu m_lcu;
+	QRadioButton m_radio11;
+	QRadioButton m_radio12;
+	QRadioButton m_radio13;
+	QRadioButton m_radio21;
+	QButtonGroup m_btnGruop1;
+	QLabel m_label;
+	Lcu m_lcu;
 };

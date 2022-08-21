@@ -1,7 +1,7 @@
 #include "log.h"
 using time_point = std::chrono::system_clock::time_point;
 
-Logger::Logger(){}
+Logger::Logger() {}
 Logger::Logger(std::string logname, std::string logfile)
 {
     m_logName = logname;
@@ -24,5 +24,21 @@ void Logger::log(LogType type, std::string text)
 {
     m_time = std::chrono::system_clock::now();
     std::string s_time = serializeTimePoint();
-    fprintf(m_logFile, "[%s %s]: %s\n", s_time.c_str(), m_logName.c_str(), text.c_str());
+
+    switch (type)
+    {
+    case LogType::_INFO:
+        fprintf(m_logFile, "[%s %s INFO]: %s\n", s_time.c_str(), m_logName.c_str(), text.c_str());
+        break;
+    case LogType::_WARM:
+        fprintf(m_logFile, "[%s %s WARM]: %s\n", s_time.c_str(), m_logName.c_str(), text.c_str());
+        fflush(m_logFile);
+        break;
+    case LogType::_ERROR:
+        fprintf(m_logFile, "[%s %s ERROR]: %s\n", s_time.c_str(), m_logName.c_str(), text.c_str());
+        fflush(m_logFile);
+        break;
+    default:
+        break;
+    }
 }
