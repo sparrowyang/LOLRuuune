@@ -3,11 +3,10 @@
 #include<iostream>
 using namespace std;
 
-class Decode
-{
+class Decode {
 public:
     Decode();
-    string base64_encode(const string &instr);
+    string base64_encode(const string& instr);
 
     //string base64_encode(std::byte,)
 private:

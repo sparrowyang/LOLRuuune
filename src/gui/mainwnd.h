@@ -17,75 +17,68 @@
 [x x x]
 [Apply]
 */
-class DrapBtn : public QPushButton
-{
+class DrapBtn : public QPushButton {
 public:
-	DrapBtn(){};
-	~DrapBtn(){};
-	QPoint m_CurrentPos;
-	QMainWindow *m;
-	void mousePressEvent(QMouseEvent *event)
-	{
+    DrapBtn() {};
+    ~DrapBtn() {};
+    QPoint m_CurrentPos;
+    QMainWindow* m;
+    void mousePressEvent(QMouseEvent* event) {
+        //按住左键可以托动窗口
+        if (event->button() == Qt::LeftButton) {
+            m_CurrentPos = event->globalPos() - m->frameGeometry().topLeft();
+            event->accept();
+        }
+    }
 
-		//按住左键可以托动窗口
-		if (event->button() == Qt::LeftButton)
-		{
-			m_CurrentPos = event->globalPos() - m->frameGeometry().topLeft();
-			event->accept();
-		}
-	}
-
-	void mouseMoveEvent(QMouseEvent *event)
-	{
-		if (event->buttons() && Qt::LeftButton)
-		{
-			m->move(event->globalPos() - m_CurrentPos);
-			event->accept();
-		}
-	}
-	void SetMain(QMainWindow *_m) { m = _m; }
+    void mouseMoveEvent(QMouseEvent* event) {
+        if (event->buttons() && Qt::LeftButton) {
+            m->move(event->globalPos() - m_CurrentPos);
+            event->accept();
+        }
+    }
+    void SetMain(QMainWindow* _m) { m = _m; }
 };
 
 class Mainwnd : public QMainWindow,
-				public std::enable_shared_from_this<Mainwnd>
-{
+    public std::enable_shared_from_this<Mainwnd> {
 private:
-	/* data */
+    /* data */
 public:
-	Mainwnd(/* args */);
-	~Mainwnd();
-	QString LoadQss();
+    Mainwnd(/* args */);
+    ~Mainwnd();
+    QString LoadQss();
 
 protected:
-	void ConnectSignals();
+    void ConnectSignals();
 
 private slots:
-	void OnClick();
+    void OnClick();
 
 private:
-	QIcon m_icon;
-	QSystemTrayIcon m_trayIcon;
-	QWidget m_mainWidget;
-	QLineEdit m_lindEdit;
-	QVBoxLayout m_hLayout;
-	QHBoxLayout m_vLayoutTitle;
-	QComboBox m_comboBox;
+    QIcon m_icon;
+    QSystemTrayIcon m_trayIcon;
+    QWidget m_mainWidget;
+    QLineEdit m_lindEdit;
+    QVBoxLayout m_hLayout;
+    QHBoxLayout m_vLayoutTitle;
+    QComboBox m_comboBox;
 
-	QPushButton m_newBtn;
-	QPushButton m_delBtn;
-	QPushButton m_setBtn;
-	QPushButton m_saveBtn;
-	QPushButton m_exitBtn;
-	QStatusBar m_statusBar;
-	DrapBtn m_drapBtn;
-	QAction m_quit;
+    QPushButton m_newBtn;
+    QPushButton m_delBtn;
+    QPushButton m_setBtn;
+    QPushButton m_saveBtn;
+    QPushButton m_exitBtn;
+    QStatusBar m_statusBar;
+    DrapBtn m_drapBtn;
+    QAction m_quit;
 
-	QRadioButton m_radio11;
-	QRadioButton m_radio12;
-	QRadioButton m_radio13;
-	QRadioButton m_radio21;
-	QButtonGroup m_btnGruop1;
-	QLabel m_label;
-	Lcu m_lcu;
-	QPoint m_CurrentPos;
+    QRadioButton m_radio11;
+    QRadioButton m_radio12;
+    QRadioButton m_radio13;
+    QRadioButton m_radio21;
+    QButtonGroup m_btnGruop1;
+    QLabel m_label;
+    Lcu m_lcu;
+    QPoint m_CurrentPos;
 };

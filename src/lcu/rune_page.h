@@ -1,20 +1,19 @@
 #pragma once
 #include <string>
 #include <list>
-class RunePage
-{
+class RunePage {
 public:
-RunePage();
-~RunePage();
+    RunePage();
+    ~RunePage();
 
-void SetName(std::string name);
-void SetprimaryStyleId(int id);
-void SetsubStyleId(int id);
-void SetData(std::list<int> data);
-std::string GetName();
-std::list<int> GetPageData();
-int GetprimaryStyleId();
-int GetsubStyleId();
+    void SetName(std::string name);
+    void SetprimaryStyleId(int id);
+    void SetsubStyleId(int id);
+    void SetData(std::list<int> data);
+    std::string GetName();
+    std::list<int> GetPageData();
+    int GetprimaryStyleId();
+    int GetsubStyleId();
 private:
     std::string m_name;
     int m_primaryStyleId;

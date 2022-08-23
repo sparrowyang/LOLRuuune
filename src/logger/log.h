@@ -4,15 +4,13 @@
 #include <chrono>
 #include <iomanip>
 #include <sstream>
-enum class LogType
-{
+enum class LogType {
     _INFO,
     _WARM,
     _ERROR
 };
 
-class Logger
-{
+class Logger {
 public:
     Logger();
     Logger(std::string logname, std::string logfile = "test.log");
@@ -23,5 +21,5 @@ private:
     std::string m_logName;
     std::string m_logFileName;
     std::chrono::system_clock::time_point m_time;
-    FILE *m_logFile;
+    FILE* m_logFile;
 };
