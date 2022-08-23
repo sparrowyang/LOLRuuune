@@ -17,8 +17,38 @@
 [x x x]
 [Apply]
 */
+class DrapBtn : public QPushButton
+{
+public:
+	DrapBtn(){};
+	~DrapBtn(){};
+	QPoint m_CurrentPos;
+	QMainWindow *m;
+	void mousePressEvent(QMouseEvent *event)
+	{
+
+		//按住左键可以托动窗口
+		if (event->button() == Qt::LeftButton)
+		{
+			m_CurrentPos = event->globalPos() - m->frameGeometry().topLeft();
+			event->accept();
+		}
+	}
+
+	void mouseMoveEvent(QMouseEvent *event)
+	{
+		if (event->buttons() && Qt::LeftButton)
+		{
+			m->move(event->globalPos() - m_CurrentPos);
+			event->accept();
+		}
+	}
+	void SetMain(QMainWindow *_m) { m = _m; }
+};
+
 class Mainwnd : public QMainWindow,
-	public std::enable_shared_from_this<Mainwnd> {
+				public std::enable_shared_from_this<Mainwnd>
+{
 private:
 	/* data */
 public:
@@ -46,7 +76,8 @@ private:
 	QPushButton m_setBtn;
 	QPushButton m_saveBtn;
 	QPushButton m_exitBtn;
-
+	QStatusBar m_statusBar;
+	DrapBtn m_drapBtn;
 	QAction m_quit;
 
 	QRadioButton m_radio11;
@@ -56,4 +87,5 @@ private:
 	QButtonGroup m_btnGruop1;
 	QLabel m_label;
 	Lcu m_lcu;
+	QPoint m_CurrentPos;
 };

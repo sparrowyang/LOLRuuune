@@ -62,7 +62,7 @@ bool Lcu::setRune(int id)
 {
 
 	nlohmann::json j;
-	j["name"] =  m_RunePages[id].GetName();
+	j["name"] = m_RunePages[id].GetName();
 	j["primaryStyleId"] = m_RunePages[id].GetprimaryStyleId();
 	j["subStyleId"] = m_RunePages[id].GetsubStyleId();
 	j["selectedPerkIds"] = m_RunePages[id].GetPageData();
@@ -97,7 +97,7 @@ bool Lcu::delRunePage()
 
 void Lcu::DelSavePage(int id)
 {
-	m_RunePages.erase(m_RunePages.begin()+id);
+	m_RunePages.erase(m_RunePages.begin() + id);
 }
 
 bool Lcu::saveRunnePage()
@@ -105,8 +105,8 @@ bool Lcu::saveRunnePage()
 	auto res = m_lolClient->Get(s_page);
 	auto jdata = nlohmann::json::parse(res->body);
 	RunePage p;
-	m_logger.log(LogType::_INFO," >>> Save Page");
-	m_logger.log(LogType::_INFO,jdata[0].dump());
+	m_logger.log(LogType::_INFO, " >>> Save Page");
+	m_logger.log(LogType::_INFO, jdata[0].dump());
 	try
 	{
 		p.SetName(jdata[0]["name"].get<std::string>());
@@ -115,8 +115,10 @@ bool Lcu::saveRunnePage()
 		p.SetsubStyleId(jdata[0]["subStyleId"].get<int>());
 		m_RunePages.emplace_back(p);
 		SaveToFile();
-	}catch(std::exception e){
-		m_logger.log(LogType::_ERROR,e.what());
+	}
+	catch (std::exception e)
+	{
+		m_logger.log(LogType::_ERROR, e.what());
 	}
 	return false;
 }
@@ -125,28 +127,30 @@ void Lcu::SaveToFile()
 {
 	std::ofstream f("data.json", std::ios_base::out);
 	nlohmann::json j;
-	for (size_t i = 0; i < m_RunePages.size();i++) {
+	for (size_t i = 0; i < m_RunePages.size(); i++)
+	{
 		j[i]["name"] = m_RunePages[i].GetName();
 		j[i]["primaryStyleId"] = m_RunePages[i].GetprimaryStyleId();
 		j[i]["subStyleId"] = m_RunePages[i].GetsubStyleId();
 		j[i]["selectedPerkIds"] = m_RunePages[i].GetPageData();
-		
-	}std::string d = j.dump();
-		f.write(d.c_str(), d.length());
+	}
+	std::string d = j.dump();
+	f.write(d.c_str(), d.length());
 	f.close();
-
-
 }
 
 void Lcu::LoadFile()
-{std::ifstream f("data.json");
-	try {
-		
+{
+	std::ifstream f("data.json");
+	try
+	{
+
 		nlohmann::json j = nlohmann::json::parse(f);
 		m_logger.log(LogType::_WARM, "load file");
-		m_logger.log(LogType::_WARM,j.dump());
+		m_logger.log(LogType::_WARM, j.dump());
 		RunePage p;
-		for (auto &i : j) {
+		for (auto &i : j)
+		{
 			p.SetName(i["name"].get<std::string>());
 			p.SetData(i["selectedPerkIds"].get<std::list<int>>());
 			p.SetprimaryStyleId(i["primaryStyleId"].get<int>());
@@ -154,13 +158,14 @@ void Lcu::LoadFile()
 			m_RunePages.emplace_back(p);
 		}
 	}
-	catch (std::exception e) {
+	catch (std::exception e)
+	{
 		m_logger.log(LogType::_ERROR, e.what());
 	}
 	f.close();
 }
 
-std::vector<RunePage> Lcu::GetSavePages(){
+std::vector<RunePage> Lcu::GetSavePages()
+{
 	return m_RunePages;
 }
-

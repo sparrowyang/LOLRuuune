@@ -3,26 +3,19 @@ Mainwnd::Mainwnd(/* args */)
 {
 	qDebug() << "Windows Init...";
 	m_icon.addFile(":/img/ouc.png");
-	// TODO: 不显示？
 	setWindowIcon(m_icon);
 	setStyleSheet(LoadQss());
-	//隐藏窗口边框，这样会无法移动和调整大小
-	setWindowFlags(Qt::WindowStaysOnTopHint | Qt::Tool);
+
+	setWindowFlags(Qt::WindowStaysOnTopHint | Qt::Tool | Qt::FramelessWindowHint);
 
 	m_label.setText("LolRuuune");
-	// m_label.setMaximumHeight(10);
-	// m_label.setFont();
 	m_newBtn.setText("+");
 	m_delBtn.setText("-");
 	m_exitBtn.setText("Exit");
 	m_setBtn.setText("Done");
 	m_saveBtn.setText("Save");
-	// m_radio11.setText("radio");
-	// m_radio12.setText("radio");
-	// m_radio13.setText("radio");
-	// m_btnGruop1.addButton(&m_radio11);
-	// m_btnGruop1.addButton(&m_radio12);
-	// m_btnGruop1.addButton(&m_radio13);
+	m_drapBtn.setText("@");
+	m_drapBtn.SetMain(this);
 
 	m_vLayoutTitle.addWidget(&m_comboBox, 3);
 	m_vLayoutTitle.addWidget(&m_newBtn);
@@ -38,8 +31,10 @@ Mainwnd::Mainwnd(/* args */)
 	// m_hLayout.addWidget(&m_radio12);
 	// m_hLayout.addWidget(&m_radio13);
 	m_hLayout.addWidget(&m_setBtn, 1);
-	//m_hLayout.addWidget(&m_saveBtn, 1);
+	// m_hLayout.addWidget(&m_saveBtn, 1);
 	m_hLayout.addWidget(&m_exitBtn, 1);
+	m_hLayout.addWidget(&m_drapBtn, 1);
+	m_hLayout.addWidget(&m_statusBar, 1);
 	// m_hLayout.addWidget();
 	m_mainWidget.setLayout(&m_hLayout);
 	setCentralWidget(&m_mainWidget);
@@ -55,7 +50,8 @@ Mainwnd::Mainwnd(/* args */)
 	m_lcu.LoadFile();
 	auto pages = m_lcu.GetSavePages();
 	m_comboBox.clear();
-	for (auto& i : pages) {
+	for (auto &i : pages)
+	{
 		m_comboBox.addItem(QString::fromStdString(i.GetName()));
 	}
 	ConnectSignals();
@@ -67,53 +63,55 @@ void Mainwnd::ConnectSignals()
 {
 	//带参数要这样写
 	connect(&m_comboBox,
-		static_cast<void (QComboBox::*)(const QString &)>(
-			&QComboBox::currentTextChanged),
-		this, [](const QString &text)
-	{ qDebug() << text; });
+			static_cast<void (QComboBox::*)(const QString &)>(
+				&QComboBox::currentTextChanged),
+			this, [](const QString &text)
+			{ qDebug() << text; });
 	connect(&m_delBtn, &QPushButton::clicked, this,
-		[&]
-	{
-		int id = m_comboBox.currentIndex();
-		m_lcu.DelSavePage(id); 
-		auto pages = m_lcu.GetSavePages();
-		m_comboBox.clear();
-		for (auto& i : pages) {
-			m_comboBox.addItem(QString::fromStdString(i.GetName()));
-		}
-		m_lcu.SaveToFile();
-	});
+			[&]
+			{
+				int id = m_comboBox.currentIndex();
+				m_lcu.DelSavePage(id);
+				auto pages = m_lcu.GetSavePages();
+				m_comboBox.clear();
+				for (auto &i : pages)
+				{
+					m_comboBox.addItem(QString::fromStdString(i.GetName()));
+				}
+				m_lcu.SaveToFile();
+			});
 	connect(&m_setBtn, &QPushButton::clicked, this,
-		[&]
-	{
+			[&]
+			{
 		int id = m_comboBox.currentIndex();
 		m_lcu.setRune(id); });
 	connect(&m_newBtn, &QPushButton::clicked, this,
-		[=]
-	{
-		m_lcu.saveRunnePage();
-		auto pages = m_lcu.GetSavePages();
-		m_comboBox.clear();
-		for (auto& i : pages) {
-			m_comboBox.addItem(QString::fromStdString(i.GetName()));
-		}
-		m_lcu.SaveToFile();
-	});
+			[=]
+			{
+				m_lcu.saveRunnePage();
+				auto pages = m_lcu.GetSavePages();
+				m_comboBox.clear();
+				for (auto &i : pages)
+				{
+					m_comboBox.addItem(QString::fromStdString(i.GetName()));
+				}
+				m_lcu.SaveToFile();
+			});
 
 	connect(&m_exitBtn, &QPushButton::clicked, this, [=]()
-	{
+			{
 		QApplication* app;
 		app->exit(0); });
 	connect(&m_trayIcon, &QSystemTrayIcon::activated, this, [=]()
-	{
-		if (isHidden()) {
+			{
+		if (isHidden()) { 
 			show();
 		}
 		else {
 			close();
 		} });
 	connect(&m_quit, &QAction::triggered, this, []()
-	{
+			{
 		QApplication* app;
 		app->exit(0); });
 }

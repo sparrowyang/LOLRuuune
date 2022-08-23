@@ -5,7 +5,10 @@ Company: GTRONICK
 Last updated: 01/10/2021 (dd/mm/yyyy), 15:18.
 Available at: https://github.com/GTRONICK/QSS/blob/master/Ubuntu.qss
 */
+
+
 QMainWindow {
+
 	background-color: rgb(19, 29, 35);
 	color: rgb(181, 151, 88);
 	
