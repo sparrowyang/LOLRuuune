@@ -2,34 +2,54 @@
 Mainwnd::Mainwnd(/* args */) {
     qDebug() << "Windows Init...";
     m_icon.addFile(":/img/ouc.png");
+	i_del.addFile(":/img/delete.png");
+	i_hide.addFile(":/img/hide.png");
+	i_exit.addFile(":/img/power.png");
+	i_move.addFile(":/img/move.png");
+	i_done.addFile(":/img/done.png");
+	i_add.addFile(":/img/add.png");
     setWindowIcon(m_icon);
     setStyleSheet(LoadQss());
     setWindowFlags(Qt::WindowStaysOnTopHint | Qt::Tool | Qt::FramelessWindowHint);
-    m_label.setText("LolRuuune");
-    m_newBtn.setText("+");
-    m_delBtn.setText("-");
-    m_exitBtn.setText("Exit");
-    m_setBtn.setText("Done");
-    m_saveBtn.setText("Save");
-    m_drapBtn.setText("@");
+    m_label.setText("LolRuuuner");
+    QFont font;
+    font.setFamily("Consolas");
+    font.setPixelSize(48);
+    m_label.setFont(font);
+    //m_newBtn.setText("+");
+	m_newBtn.setIcon(i_add);
+    //m_delBtn.setText("-");
+	m_delBtn.setIcon(i_del);
+    //m_exitBtn.setText("Exit");
+	m_exitBtn.setIcon(i_exit);
+    m_hidBtn.setIcon(i_hide);
+    //m_setBtn.setText("Done");
+	m_setBtn.setIcon(i_done);
+    m_setBtn.setText("Save");
+    m_setBtn.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+    //m_drapBtn.setText("@");
+	m_drapBtn.setIcon(i_move);
     m_drapBtn.SetMain(this);
-    m_vLayoutTitle.addWidget(&m_comboBox, 3);
+    m_vLayoutTitle.addWidget(&m_comboBox,3);
     m_vLayoutTitle.addWidget(&m_newBtn);
     m_vLayoutTitle.addWidget(&m_delBtn);
     // m_vLayoutTitle.setStretchFactor();
     // m_btnGruop1.setExclusive(true);
-    // m_hLayout.addWidget(&m_label);
-    m_hLayout.addWidget(&m_label, 1);
-    m_hLayout.addLayout(&m_vLayoutTitle, 2);
+    m_headerLayout.addWidget(&m_drapBtn,5);
+    m_headerLayout.addWidget(&m_hidBtn);
+    m_headerLayout.addWidget(&m_exitBtn,1);
+    m_hLayout.addLayout(&m_headerLayout);
+    m_hLayout.addWidget(&m_label);
+    m_hLayout.addLayout(&m_vLayoutTitle);
     // m_hLayout.addWidget(&m_comboBox);
     // m_hLayout.addWidget(&m_radio11);
     // m_hLayout.addWidget(&m_radio12);
     // m_hLayout.addWidget(&m_radio13);
-    m_hLayout.addWidget(&m_setBtn, 1);
+    m_hLayout.addWidget(&m_setBtn, 3);
     // m_hLayout.addWidget(&m_saveBtn, 1);
-    m_hLayout.addWidget(&m_exitBtn, 1);
-    m_hLayout.addWidget(&m_drapBtn, 1);
-    m_hLayout.addWidget(&m_statusBar, 1);
+    // m_hLayout.addWidget(&m_exitBtn, 1);
+    // m_hLayout.addWidget(&m_drapBtn, 1);
+    m_hLayout.addWidget(&m_statusBar);
     // m_hLayout.addWidget();
     m_mainWidget.setLayout(&m_hLayout);
     setCentralWidget(&m_mainWidget);
@@ -53,7 +73,6 @@ Mainwnd::Mainwnd(/* args */) {
 Mainwnd::~Mainwnd() {}
 
 void Mainwnd::ConnectSignals() {
-    //带参数要这样写
     connect(&m_comboBox,
             static_cast<void (QComboBox::*)(const QString&)>(
             &QComboBox::currentTextChanged),
@@ -91,8 +110,19 @@ void Mainwnd::ConnectSignals() {
     });
     connect(&m_trayIcon, &QSystemTrayIcon::activated, this, [ = ]() {
         if (isHidden()) {
+            resize(m_size);
             show();
         } else {
+            m_size = size();
+            close();
+        }
+    });
+    connect(&m_hidBtn,&QPushButton::clicked, this, [ = ]() {
+        if (isHidden()) {
+            resize(m_size);
+            show();
+        } else {
+            m_size = size();
             close();
         }
     });

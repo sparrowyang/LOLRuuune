@@ -4,5 +4,11 @@
     </qresource>
     <qresource prefix="/img">
         <file>ouc.png</file>
+        <file>add.png</file>
+        <file>delete.png</file>
+        <file>done.png</file>
+        <file>hide.png</file>
+        <file>move.png</file>
+        <file>power.png</file>
     </qresource>
 </RCC>

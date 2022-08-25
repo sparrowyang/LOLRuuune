@@ -57,26 +57,30 @@ private slots:
 
 private:
     QIcon m_icon;
+    QIcon i_add;
+    QIcon i_del;
+    QIcon i_hide;
+    QIcon i_exit;
+    QIcon i_move;
+    QIcon i_done;
+    QSize m_size;
     QSystemTrayIcon m_trayIcon;
     QWidget m_mainWidget;
-    QLineEdit m_lindEdit;
     QVBoxLayout m_hLayout;
+    QHBoxLayout m_headerLayout;
     QHBoxLayout m_vLayoutTitle;
     QComboBox m_comboBox;
 
+    QPushButton m_hidBtn;
     QPushButton m_newBtn;
     QPushButton m_delBtn;
     QPushButton m_setBtn;
-    QPushButton m_saveBtn;
+    // QPushButton m_saveBtn;
     QPushButton m_exitBtn;
     QStatusBar m_statusBar;
     DrapBtn m_drapBtn;
     QAction m_quit;
 
-    QRadioButton m_radio11;
-    QRadioButton m_radio12;
-    QRadioButton m_radio13;
-    QRadioButton m_radio21;
     QButtonGroup m_btnGruop1;
     QLabel m_label;
     Lcu m_lcu;
