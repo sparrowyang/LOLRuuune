@@ -13,7 +13,7 @@ Lcu::Lcu() {
     std::regex_search(res, match, re);
     try {
         if (match[1] == "" || match[2] == "") {
-            throw std::runtime_error("Please Run as Administor");
+            throw std::runtime_error("Get token failed, please ensure game is started and run as Administor");
         }
         m_token = match[1];
         m_port = match[2];
@@ -23,6 +23,7 @@ Lcu::Lcu() {
         m_lolClient;
         m_lolClient->enable_server_certificate_verification(false);
         m_lolClient->set_basic_auth("riot", m_token);
+		isConnect = true;
     } catch (std::exception e) {
         m_logger.log(LogType::_ERROR, e.what());
     }
@@ -52,6 +53,13 @@ std::string Lcu::exec(const char* cmd) {
         "selectedPerkIds": [8351,8313,8345,8347,8451,8444,5007,5002,5001]
 */
 bool Lcu::setRune(int id) {
+	if (!CheckConnect()) {
+		return false;
+	}
+	if(m_RunePages.size()==0){
+		m_logger.log(LogType::_WARM,"Set Empty Data");
+		return false;
+	}
     nlohmann::json j;
     j["name"] = m_RunePages[id].GetName();
     j["primaryStyleId"] = m_RunePages[id].GetprimaryStyleId();
@@ -73,6 +81,9 @@ bool Lcu::addRunePage() {
     return false;
 }
 bool Lcu::delRunePage() {
+	if (!CheckConnect()) {
+		return false;
+	}
     m_logger.log(LogType::_INFO, "delRunePage");
     auto res = m_lolClient->Delete(s_page);
     // std::cout << "setRune res " << res->status << std::endl;
@@ -81,23 +92,31 @@ bool Lcu::delRunePage() {
 }
 
 void Lcu::DelSavePage(int id) {
-    m_RunePages.erase(m_RunePages.begin() + id);
+	if(m_RunePages.size()){
+		m_RunePages.erase(m_RunePages.begin() + id);
+	}
 }
 
 bool Lcu::saveRunnePage() {
-    auto res = m_lolClient->Get(s_page);
-    auto jdata = nlohmann::json::parse(res->body);
-    RunePage p;
-    m_logger.log(LogType::_INFO, " >>> Save Page");
-    m_logger.log(LogType::_INFO, jdata[0].dump());
+	if(!CheckConnect()){
+		return false;
+	}
+
     try {
+		auto res = m_lolClient->Get(s_page);
+		auto jdata = nlohmann::json::parse(res->body);
+		RunePage p;
+		m_logger.log(LogType::_INFO, " >>> Save Page");
+		m_logger.log(LogType::_INFO, jdata[0].dump());
         p.SetName(jdata[0]["name"].get<std::string>());
         p.SetData(jdata[0]["selectedPerkIds"].get<std::list<int>>());
         p.SetprimaryStyleId(jdata[0]["primaryStyleId"].get<int>());
         p.SetsubStyleId(jdata[0]["subStyleId"].get<int>());
-        m_RunePages.emplace_back(p);
+		m_RunePages.emplace(m_RunePages.begin(), p);
+        //m_RunePages.emplace_back(p);
         SaveToFile();
     } catch (std::exception e) {
+		m_logger.log(LogType::_ERROR, "saveRunnePage Exception");
         m_logger.log(LogType::_ERROR, e.what());
     }
     return false;
@@ -121,8 +140,7 @@ void Lcu::LoadFile() {
     std::ifstream f("data.json");
     try {
         nlohmann::json j = nlohmann::json::parse(f);
-        m_logger.log(LogType::_WARM, "load file");
-        m_logger.log(LogType::_WARM, j.dump());
+        m_logger.log(LogType::_INFO, "load data file");
         RunePage p;
         for (auto& i : j) {
             p.SetName(i["name"].get<std::string>());
@@ -135,6 +153,14 @@ void Lcu::LoadFile() {
         m_logger.log(LogType::_ERROR, e.what());
     }
     f.close();
+}
+
+bool Lcu::CheckConnect()
+{
+	if(!isConnect){
+		m_logger.log(LogType::_WARM, "Not Connect.");
+	}
+	return isConnect;
 }
 
 std::vector<RunePage> Lcu::GetSavePages() {

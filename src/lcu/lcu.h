@@ -27,9 +27,11 @@ public:
     bool saveRunnePage();
     void SaveToFile();
     void LoadFile();
+	bool CheckConnect();
     std::vector<RunePage> GetSavePages();
 
 private:
+	bool isConnect = false;
     std::vector<RunePage> m_RunePages;
     Logger m_logger;
     std::string m_token;
