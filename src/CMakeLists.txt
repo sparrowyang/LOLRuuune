@@ -17,15 +17,15 @@ endif()
 add_subdirectory(lcu)
 add_subdirectory(logger)
 add_subdirectory(gui)
-add_executable(he main.cpp ${RCC_FILES})
+add_executable(Ruuune main.cpp ${RCC_FILES} icon.rc)
 
-target_link_libraries(he PRIVATE Qt5::Widgets)
-target_link_libraries(he PRIVATE mainwnd)
+target_link_libraries(Ruuune PRIVATE Qt5::Widgets)
+target_link_libraries(Ruuune PRIVATE mainwnd)
 
- #¹Ø±Õ¿ØÖÆÌ¨´°¿Ú
+ #ï¿½Ø±Õ¿ï¿½ï¿½ï¿½Ì¨ï¿½ï¿½ï¿½ï¿½
 SET(CMAKE_EXE_LINKER_FLAGS     "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS") 
 SET(CMAKE_EXE_LINKER_FLAGS     "${CMAKE_EXE_LINKER_FLAGS} /ENTRY:\"mainCRTStartup\"")
-#Ìí¼Ó¹ÜÀíÔ±È¨ÏÞ
+#ï¿½ï¿½ï¿½Ó¹ï¿½ï¿½ï¿½Ô±È¨ï¿½ï¿½
 SET(CMAKE_EXE_LINKER_FLAGS     "${CMAKE_EXE_LINKER_FLAGS} /level='requireAdministrator' /uiAccess='false'")
 
 

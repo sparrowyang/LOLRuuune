@@ -2,7 +2,9 @@
 #include "../lcu/lcu.h"
 
 #include <QString>
+#include <QStringList>
 #include <QtWidgets>
+#include <qprocess.h>
 /*
 [______________v] [O][_/][+][X]
 [_____v]  ||   [_____v]             //主系副系不重复
@@ -48,7 +50,7 @@ public:
     Mainwnd(/* args */);
     ~Mainwnd();
     QString LoadQss();
-
+	std::string GetToken();
 protected:
     void ConnectSignals();
 

@@ -29,7 +29,7 @@ public:
     void LoadFile();
 	bool CheckConnect();
     std::vector<RunePage> GetSavePages();
-
+	void SetToken(const std::string& raw);
 private:
 	bool isConnect = false;
     std::vector<RunePage> m_RunePages;

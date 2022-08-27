@@ -16,44 +16,30 @@ Mainwnd::Mainwnd(/* args */) {
     font.setFamily("Consolas");
     font.setPixelSize(48);
     m_label.setFont(font);
-    //m_newBtn.setText("+");
 	m_newBtn.setIcon(i_add);
-    //m_delBtn.setText("-");
 	m_delBtn.setIcon(i_del);
-    //m_exitBtn.setText("Exit");
 	m_exitBtn.setIcon(i_exit);
     m_hidBtn.setIcon(i_hide);
-    //m_setBtn.setText("Done");
+
 	m_setBtn.setIcon(i_done);
     m_setBtn.setText("Save");
     m_setBtn.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-    //m_drapBtn.setText("@");
+
 	m_drapBtn.setIcon(i_move);
     m_drapBtn.SetMain(this);
     m_vLayoutTitle.addWidget(&m_comboBox,3);
     m_vLayoutTitle.addWidget(&m_newBtn);
     m_vLayoutTitle.addWidget(&m_delBtn);
-    // m_vLayoutTitle.setStretchFactor();
-    // m_btnGruop1.setExclusive(true);
     m_headerLayout.addWidget(&m_drapBtn,5);
     m_headerLayout.addWidget(&m_hidBtn);
     m_headerLayout.addWidget(&m_exitBtn,1);
     m_hLayout.addLayout(&m_headerLayout);
     m_hLayout.addWidget(&m_label);
     m_hLayout.addLayout(&m_vLayoutTitle);
-    // m_hLayout.addWidget(&m_comboBox);
-    // m_hLayout.addWidget(&m_radio11);
-    // m_hLayout.addWidget(&m_radio12);
-    // m_hLayout.addWidget(&m_radio13);
     m_hLayout.addWidget(&m_setBtn, 3);
-    // m_hLayout.addWidget(&m_saveBtn, 1);
-    // m_hLayout.addWidget(&m_exitBtn, 1);
-    // m_hLayout.addWidget(&m_drapBtn, 1);
     m_hLayout.addWidget(&m_statusBar);
-    // m_hLayout.addWidget();
     m_mainWidget.setLayout(&m_hLayout);
     setCentralWidget(&m_mainWidget);
-    // resize(300, 600);
     m_trayIcon.setIcon(m_icon);
     m_trayIcon.setToolTip(tr("Known image viewer"));
     QMenu* menu = new QMenu(this);
@@ -68,16 +54,17 @@ Mainwnd::Mainwnd(/* args */) {
         m_comboBox.addItem(QString::fromStdString(i.GetName()));
     }
     ConnectSignals();
+	m_lcu.SetToken(GetToken());
 }
 
 Mainwnd::~Mainwnd() {}
 
 void Mainwnd::ConnectSignals() {
-    connect(&m_comboBox,
-            static_cast<void (QComboBox::*)(const QString&)>(
-            &QComboBox::currentTextChanged),
-            this, [](const QString & text)
-    { qDebug() << text; });
+    //connect(&m_comboBox,
+    //        static_cast<void (QComboBox::*)(const QString&)>(
+    //        &QComboBox::currentTextChanged),
+    //        this, [&](const QString & text)
+    //{ qDebug() << QString::fromStdString(GetToken()); });
     connect(&m_delBtn, &QPushButton::clicked, this,
     [&] {
         int id = m_comboBox.currentIndex();
@@ -142,6 +129,22 @@ QString Mainwnd::LoadQss() {
         qDebug("Qt StyleSheet Open failed");
     }
     return QString();
+}
+
+std::string Mainwnd::GetToken()
+{
+	//"wmic process where \"name='LeagueClientUx.exe'\" get commandline"
+	QProcess p;
+	//p.setProgram("wmic");
+	QStringList args;
+	args<<"process" << "where"<< "name='LeagueClientUx.exe'" <<"get" << "commandline";
+	//p.setArguments(args);
+	p.start("WMIC.exe", args);
+	p.waitForStarted();
+	p.waitForReadyRead();
+	p.waitForFinished();
+	QString s = QString::fromLocal8Bit(p.readAllStandardOutput());
+	return s.toStdString();
 }
 
 void Mainwnd::OnClick() {}

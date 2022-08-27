@@ -5,28 +5,7 @@
 Lcu::Lcu() {
     m_logger = Logger("Lcu", "test.log");
     m_logger.log(LogType::_INFO, "Init Lcu");
-    std::regex re("--remoting-auth-token=(.+?)\" \"--app-port=(\\d+)");
-    std::string res = exec("wmic process where \"name='LeagueClientUx.exe'\" get commandline");
-    // m_logger.log(LogType::_INFO, res);
-    std::smatch match;
-    // TODO : 错误检查
-    std::regex_search(res, match, re);
-    try {
-        if (match[1] == "" || match[2] == "") {
-            throw std::runtime_error("Get token failed, please ensure game is started and run as Administor");
-        }
-        m_token = match[1];
-        m_port = match[2];
-        m_lolClient = std::make_unique<httplib::Client>("https://"
-                      "127.0.0.1:" +
-                      m_port);
-        m_lolClient;
-        m_lolClient->enable_server_certificate_verification(false);
-        m_lolClient->set_basic_auth("riot", m_token);
-		isConnect = true;
-    } catch (std::exception e) {
-        m_logger.log(LogType::_ERROR, e.what());
-    }
+    
 }
 Lcu::~Lcu() {}
 
@@ -165,4 +144,29 @@ bool Lcu::CheckConnect()
 
 std::vector<RunePage> Lcu::GetSavePages() {
     return m_RunePages;
+}
+
+void Lcu::SetToken(const std::string& raw)
+{
+	std::regex re("--remoting-auth-token=(.+?)\" \"--app-port=(\\d+)");
+	// m_logger.log(LogType::_INFO, res);
+	std::smatch match;
+	std::regex_search(raw, match, re);
+	try {
+		if (match[1] == "" || match[2] == "") {
+			throw std::runtime_error("Get token failed, please ensure game is started and run as Administor");
+		}
+		m_token = match[1];
+		m_port = match[2];
+		m_lolClient = std::make_unique<httplib::Client>("https://"
+			"127.0.0.1:" +
+			m_port);
+		m_lolClient;
+		m_lolClient->enable_server_certificate_verification(false);
+		m_lolClient->set_basic_auth("riot", m_token);
+		isConnect = true;
+	}
+	catch (std::exception e) {
+		m_logger.log(LogType::_ERROR, e.what());
+	}
 }
