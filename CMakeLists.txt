@@ -1,11 +1,17 @@
 PROJECT(Hello)
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 set(CMAKE_CXX_STANDARD 11)
+add_definitions(-DWIN32_LEAN_AND_MEAN)
+add_definitions(-DCPPHTTPLIB_OPENSSL_SUPPORT)
 if (MSVC)
     # /MT means include msvcrt as static library in the .exe
     add_compile_options(/MT)
+    add_compile_options(/W4)
+    add_compile_options(/wd4996)
+    add_compile_options(/wd4307)
+    add_compile_options(/wd4221)
 endif()
 # find_package(sqlite3 REQUIRED)
-
+# add_definitions(-w)
 add_subdirectory(src)
 

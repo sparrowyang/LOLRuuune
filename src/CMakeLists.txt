@@ -1,6 +1,8 @@
 
 find_package(Qt5 COMPONENTS Widgets Core REQUIRED)
 set(CMAKE_AUTORCC ON)
+# set(CMAKE_AUTOUIC ON)
+# set(CMAKE_AUTOMOC ON)
 set(RCC_FILES re.qrc)
 # openssl 
 set(OPENSSL_ROOT_DIR "D:\\Program Files (x86)\\OpenSSL-Win32")
