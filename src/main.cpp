@@ -1,15 +1,12 @@
 ﻿#include <QString>
 #include <QtWidgets>
 #include "gui/mainwnd.h"
-
 #define CPPHTTPLIB_OPENSSL_SUPPORT
-
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
     Mainwnd windows;
     windows.show();
     /* 设置全局字体以及尺寸 */
-
     // app.setFont(font);
     /* 设置对话框尺寸 */
     // QDialog dialog;

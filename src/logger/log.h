@@ -1,15 +1,13 @@
 #pragma once
-
-#include <iostream>
 #include <chrono>
 #include <iomanip>
+#include <iostream>
 #include <sstream>
 enum class LogType {
     _INFO,
     _WARM,
     _ERROR
 };
-
 class Logger {
 public:
     Logger();

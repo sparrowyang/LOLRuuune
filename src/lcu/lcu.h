@@ -12,7 +12,6 @@
 #include "httplib.h"
 #include "json.h"
 #include "rune_page.h"
-
 #define CPPHTTPLIB_OPENSSL_SUPPORT
 class RunePage;
 class Lcu {
@@ -27,16 +26,17 @@ public:
     bool saveRunnePage();
     void SaveToFile();
     void LoadFile();
-	bool CheckConnect();
+    bool CheckConnect();
     std::vector<RunePage> GetSavePages();
-	void SetToken(const std::string& raw);
+    void SetToken(const std::string& raw);
+
 private:
-	bool isConnect = false;
+    bool isConnect = false;
     std::vector<RunePage> m_RunePages;
     Logger m_logger;
     std::string m_token;
     std::string m_port;
     std::unique_ptr<httplib::Client> m_lolClient;
     const std::string s_currentPage = "/lol-perks/v1/currentpage";
-    const std::string s_page = "/lol-perks/v1/pages";
+    const std::string s_page        = "/lol-perks/v1/pages";
 };

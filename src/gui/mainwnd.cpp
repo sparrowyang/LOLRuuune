@@ -2,12 +2,12 @@
 Mainwnd::Mainwnd(/* args */) {
     qDebug() << "Windows Init...";
     m_icon.addFile(":/img/ouc.png");
-	i_del.addFile(":/img/delete.png");
-	i_hide.addFile(":/img/hide.png");
-	i_exit.addFile(":/img/power.png");
-	i_move.addFile(":/img/move.png");
-	i_done.addFile(":/img/done.png");
-	i_add.addFile(":/img/add.png");
+    i_del.addFile(":/img/delete.png");
+    i_hide.addFile(":/img/hide.png");
+    i_exit.addFile(":/img/power.png");
+    i_move.addFile(":/img/move.png");
+    i_done.addFile(":/img/done.png");
+    i_add.addFile(":/img/add.png");
     setWindowIcon(m_icon);
     setStyleSheet(LoadQss());
     setWindowFlags(Qt::WindowStaysOnTopHint | Qt::Tool | Qt::FramelessWindowHint);
@@ -16,23 +16,23 @@ Mainwnd::Mainwnd(/* args */) {
     font.setFamily("Consolas");
     font.setPixelSize(48);
     m_label.setFont(font);
-	m_newBtn.setIcon(i_add);
-	m_delBtn.setIcon(i_del);
-	m_exitBtn.setIcon(i_exit);
+    m_newBtn.setIcon(i_add);
+    m_delBtn.setIcon(i_del);
+    m_exitBtn.setIcon(i_exit);
     m_hidBtn.setIcon(i_hide);
-
-	m_setBtn.setIcon(i_done);
+    m_conBtn.setText("C");
+    m_setBtn.setIcon(i_done);
     m_setBtn.setText("Save");
-    m_setBtn.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-
-	m_drapBtn.setIcon(i_move);
+    m_setBtn.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_drapBtn.setIcon(i_move);
     m_drapBtn.SetMain(this);
-    m_vLayoutTitle.addWidget(&m_comboBox,3);
+    m_vLayoutTitle.addWidget(&m_comboBox, 3);
     m_vLayoutTitle.addWidget(&m_newBtn);
     m_vLayoutTitle.addWidget(&m_delBtn);
-    m_headerLayout.addWidget(&m_drapBtn,5);
+    m_headerLayout.addWidget(&m_drapBtn, 5);
+    m_headerLayout.addWidget(&m_conBtn);
     m_headerLayout.addWidget(&m_hidBtn);
-    m_headerLayout.addWidget(&m_exitBtn,1);
+    m_headerLayout.addWidget(&m_exitBtn, 1);
     m_hLayout.addLayout(&m_headerLayout);
     m_hLayout.addWidget(&m_label);
     m_hLayout.addLayout(&m_vLayoutTitle);
@@ -50,65 +50,62 @@ Mainwnd::Mainwnd(/* args */) {
     m_lcu.LoadFile();
     auto pages = m_lcu.GetSavePages();
     m_comboBox.clear();
-    for (auto& i : pages) {
+    for (auto& i: pages) {
         m_comboBox.addItem(QString::fromStdString(i.GetName()));
     }
     ConnectSignals();
-	m_lcu.SetToken(GetToken());
+    m_lcu.SetToken(GetToken());
 }
-
 Mainwnd::~Mainwnd() {}
-
 void Mainwnd::ConnectSignals() {
-    //connect(&m_comboBox,
-    //        static_cast<void (QComboBox::*)(const QString&)>(
-    //        &QComboBox::currentTextChanged),
-    //        this, [&](const QString & text)
+    // connect(&m_comboBox,
+    //         static_cast<void (QComboBox::*)(const QString&)>(
+    //         &QComboBox::currentTextChanged),
+    //         this, [&](const QString & text)
     //{ qDebug() << QString::fromStdString(GetToken()); });
-    connect(&m_delBtn, &QPushButton::clicked, this,
-    [&] {
+    connect(&m_delBtn, &QPushButton::clicked, this, [&] {
         int id = m_comboBox.currentIndex();
         m_lcu.DelSavePage(id);
         auto pages = m_lcu.GetSavePages();
         m_comboBox.clear();
-        for (auto& i : pages) {
+        for (auto& i: pages) {
             m_comboBox.addItem(QString::fromStdString(i.GetName()));
         }
         m_lcu.SaveToFile();
     });
-    connect(&m_setBtn, &QPushButton::clicked, this,
-    [&] {
+    connect(&m_setBtn, &QPushButton::clicked, this, [&] {
         int id = m_comboBox.currentIndex();
         m_lcu.setRune(id);
     });
-    connect(&m_newBtn, &QPushButton::clicked, this,
-    [ = ] {
+    connect(&m_newBtn, &QPushButton::clicked, this, [=] {
         m_lcu.saveRunnePage();
         auto pages = m_lcu.GetSavePages();
         m_comboBox.clear();
-        for (auto& i : pages) {
+        for (auto& i: pages) {
             m_comboBox.addItem(QString::fromStdString(i.GetName()));
         }
         m_lcu.SaveToFile();
     });
-    connect(&m_exitBtn, &QPushButton::clicked, this, [ = ]() {
+    connect(&m_exitBtn, &QPushButton::clicked, this, [=]() {
         QApplication* app;
         app->exit(0);
     });
-    connect(&m_trayIcon, &QSystemTrayIcon::activated, this, [ = ]() {
+    connect(&m_trayIcon, &QSystemTrayIcon::activated, this, [=]() {
         if (isHidden()) {
             resize(m_size);
             show();
-        } else {
+        }
+        else {
             m_size = size();
             close();
         }
     });
-    connect(&m_hidBtn,&QPushButton::clicked, this, [ = ]() {
+    connect(&m_hidBtn, &QPushButton::clicked, this, [=]() {
         if (isHidden()) {
             resize(m_size);
             show();
-        } else {
+        }
+        else {
             m_size = size();
             close();
         }
@@ -125,26 +122,28 @@ QString Mainwnd::LoadQss() {
         QString style = QLatin1String(qss.readAll());
         qss.close();
         return style;
-    } else {
+    }
+    else {
         qDebug("Qt StyleSheet Open failed");
     }
     return QString();
 }
-
-std::string Mainwnd::GetToken()
-{
-	//"wmic process where \"name='LeagueClientUx.exe'\" get commandline"
-	QProcess p;
-	//p.setProgram("wmic");
-	QStringList args;
-	args<<"process" << "where"<< "name='LeagueClientUx.exe'" <<"get" << "commandline";
-	//p.setArguments(args);
-	p.start("WMIC.exe", args);
-	p.waitForStarted();
-	p.waitForReadyRead();
-	p.waitForFinished();
-	QString s = QString::fromLocal8Bit(p.readAllStandardOutput());
-	return s.toStdString();
+std::string Mainwnd::GetToken() {
+    //"wmic process where \"name='LeagueClientUx.exe'\" get commandline"
+    QProcess p;
+    // p.setProgram("wmic");
+    QStringList args;
+    args << "process"
+         << "where"
+         << "name='LeagueClientUx.exe'"
+         << "get"
+         << "commandline";
+    // p.setArguments(args);
+    p.start("WMIC.exe", args);
+    p.waitForStarted();
+    p.waitForReadyRead();
+    p.waitForFinished();
+    QString s = QString::fromLocal8Bit(p.readAllStandardOutput());
+    return s.toStdString();
 }
-
 void Mainwnd::OnClick() {}

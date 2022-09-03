@@ -1,20 +1,15 @@
 #ifndef DECODE_H
 #define DECODE_H
-#include<iostream>
+#include <iostream>
 using namespace std;
-
 class Decode {
 public:
     Decode();
     string base64_encode(const string& instr);
-
-    //string base64_encode(std::byte,)
+    // string base64_encode(std::byte,)
 private:
     const char* base64_sheet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-
 };
-
-
 /*
 
 Base64将输入字符串按字节切分，取得每个字节对应的二进制值（若不足8比特则高位补0），
@@ -41,4 +36,3 @@ Base64可用于任意数据的底层二进制数据编码，以应用于只能�
 Base64编码若无特别说明，通常约定非ASCII字符按照UTF-8字符集进行编码处理。
 */
 #endif // DECODE_H
-

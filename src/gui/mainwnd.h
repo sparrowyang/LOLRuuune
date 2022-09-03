@@ -1,25 +1,10 @@
 #pragma once
-#include "../lcu/lcu.h"
-
+#include <qprocess.h>
 #include <QString>
 #include <QStringList>
 #include <QtWidgets>
-#include <qprocess.h>
-/*
-[______________v] [O][_/][+][X]
-[_____v]  ||   [_____v]             //主系副系不重复
--------------------
-[x x x]        [x x x]              //不一定是三个，可变长度
-[x x x]        [x x x]
-[x x x]        [x x x]
-[x x x]
---------------------
-[x x x]
-[x x x]
-[x x x]
-[Apply]
-*/
-class DrapBtn : public QPushButton {
+#include "../lcu/lcu.h"
+class DrapBtn: public QPushButton {
 public:
     DrapBtn() {};
     ~DrapBtn() {};
@@ -32,7 +17,6 @@ public:
             event->accept();
         }
     }
-
     void mouseMoveEvent(QMouseEvent* event) {
         if (event->buttons() && Qt::LeftButton) {
             m->move(event->globalPos() - m_CurrentPos);
@@ -41,48 +25,32 @@ public:
     }
     void SetMain(QMainWindow* _m) { m = _m; }
 };
-
-class Mainwnd : public QMainWindow,
-    public std::enable_shared_from_this<Mainwnd> {
+class Mainwnd: public QMainWindow,
+               public std::enable_shared_from_this<Mainwnd> {
 private:
     /* data */
 public:
     Mainwnd(/* args */);
     ~Mainwnd();
     QString LoadQss();
-	std::string GetToken();
+    std::string GetToken();
+
 protected:
     void ConnectSignals();
-
 private slots:
     void OnClick();
 
 private:
-    QIcon m_icon;
-    QIcon i_add;
-    QIcon i_del;
-    QIcon i_hide;
-    QIcon i_exit;
-    QIcon i_move;
-    QIcon i_done;
+    QIcon m_icon, i_add, i_del, i_hide, i_exit, i_move, i_done;
     QSize m_size;
     QSystemTrayIcon m_trayIcon;
     QWidget m_mainWidget;
-    QVBoxLayout m_hLayout;
-    QHBoxLayout m_headerLayout;
-    QHBoxLayout m_vLayoutTitle;
+    QVBoxLayout m_hLayout, m_headerLayout, m_vLayoutTitle;
     QComboBox m_comboBox;
-
-    QPushButton m_hidBtn;
-    QPushButton m_newBtn;
-    QPushButton m_delBtn;
-    QPushButton m_setBtn;
-    // QPushButton m_saveBtn;
-    QPushButton m_exitBtn;
+    QPushButton m_hidBtn, m_newBtn, m_delBtn, m_setBtn, m_conBtn, m_exitBtn;
     QStatusBar m_statusBar;
     DrapBtn m_drapBtn;
     QAction m_quit;
-
     QButtonGroup m_btnGruop1;
     QLabel m_label;
     Lcu m_lcu;

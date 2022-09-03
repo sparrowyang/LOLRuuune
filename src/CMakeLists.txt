@@ -22,10 +22,10 @@ add_executable(Ruuune main.cpp ${RCC_FILES} icon.rc)
 target_link_libraries(Ruuune PRIVATE Qt5::Widgets)
 target_link_libraries(Ruuune PRIVATE mainwnd)
 
- #�رտ���̨����
+
 SET(CMAKE_EXE_LINKER_FLAGS     "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS") 
 SET(CMAKE_EXE_LINKER_FLAGS     "${CMAKE_EXE_LINKER_FLAGS} /ENTRY:\"mainCRTStartup\"")
-#���ӹ���ԱȨ��
+
 SET(CMAKE_EXE_LINKER_FLAGS     "${CMAKE_EXE_LINKER_FLAGS} /level='requireAdministrator' /uiAccess='false'")
 
 
