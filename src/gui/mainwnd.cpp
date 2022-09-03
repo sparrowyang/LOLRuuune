@@ -26,6 +26,17 @@ Mainwnd::Mainwnd(/* args */) {
     m_setBtn.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_drapBtn.setIcon(i_move);
     m_drapBtn.SetMain(this);
+    pre_layout.addWidget(&m1, 0, 0);
+    pre_layout.addWidget(&m2, 1, 0);
+    pre_layout.addWidget(&m3, 2, 0);
+    pre_layout.addWidget(&m4, 3, 0);
+    pre_layout.addWidget(&s1, 0, 1);
+    pre_layout.addWidget(&s2, 1, 1);
+    // pre_layout.addWidget(&s3, 2, 1);
+    pre_layout.addWidget(&a1, 2, 1);
+    pre_layout.addWidget(&a2, 3, 1);
+    pre_layout.addWidget(&a3, 4, 1);
+    m_preview.setLayout(&pre_layout);
     m_vLayoutTitle.addWidget(&m_comboBox, 3);
     m_vLayoutTitle.addWidget(&m_newBtn);
     m_vLayoutTitle.addWidget(&m_delBtn);
@@ -36,12 +47,13 @@ Mainwnd::Mainwnd(/* args */) {
     m_hLayout.addLayout(&m_headerLayout);
     m_hLayout.addWidget(&m_label);
     m_hLayout.addLayout(&m_vLayoutTitle);
+    m_hLayout.addWidget(&m_preview);
     m_hLayout.addWidget(&m_setBtn, 3);
     m_hLayout.addWidget(&m_statusBar);
     m_mainWidget.setLayout(&m_hLayout);
     setCentralWidget(&m_mainWidget);
     m_trayIcon.setIcon(m_icon);
-    m_trayIcon.setToolTip(tr("Known image viewer"));
+    m_trayIcon.setToolTip(tr("Ruunner"));
     QMenu* menu = new QMenu(this);
     m_quit.setText("exit");
     menu->addAction(&m_quit);
@@ -59,11 +71,9 @@ Mainwnd::Mainwnd(/* args */) {
 Mainwnd::~Mainwnd() {
 }
 void Mainwnd::ConnectSignals() {
-    // connect(&m_comboBox,
-    //         static_cast<void (QComboBox::*)(const QString&)>(
-    //         &QComboBox::currentTextChanged),
-    //         this, [&](const QString & text)
-    //{ qDebug() << QString::fromStdString(GetToken()); });
+    connect(&m_comboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [&](int index) {
+        UpdatePreview(m_lcu.GetPageMsg(index));
+    });
     connect(&m_delBtn, &QPushButton::clicked, this, [&] {
         int id = m_comboBox.currentIndex();
         m_lcu.DelSavePage(id);
@@ -146,6 +156,20 @@ std::string Mainwnd::GetToken() {
     p.waitForFinished();
     std::string s = std::string(p.readAllStandardOutput().data());
     return s;
+}
+void Mainwnd::UpdatePreview(std::vector<std::string> perks) {
+    if (perks.size() != 9) {
+        return;
+    }
+    m1.setText(QString::fromUtf8(perks[0].c_str()));
+    m2.setText(QString::fromUtf8(perks[1].c_str()));
+    m3.setText(QString::fromUtf8(perks[2].c_str()));
+    m4.setText(QString::fromUtf8(perks[3].c_str()));
+    s1.setText(QString::fromUtf8(perks[4].c_str()));
+    s2.setText(QString::fromUtf8(perks[5].c_str()));
+    a1.setText(QString::fromUtf8(perks[6].c_str()));
+    a2.setText(QString::fromUtf8(perks[7].c_str()));
+    a3.setText(QString::fromUtf8(perks[8].c_str()));
 }
 void Mainwnd::OnClick() {
 }

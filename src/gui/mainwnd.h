@@ -3,6 +3,7 @@
 #include <QString>
 #include <QStringList>
 #include <QtWidgets>
+#include <list>
 #include "../lcu/lcu.h"
 class DrapBtn: public QPushButton {
 public:
@@ -41,7 +42,11 @@ private slots:
     void OnClick();
 
 private:
+    void UpdatePreview(std::vector<std::string> perks);
+
+private:
     QIcon m_icon, i_add, i_del, i_hide, i_exit, i_move, i_done;
+    QLabel m1, m2, m3, m4, s1, s2, s3, a1, a2, a3;
     QSize m_size;
     QSystemTrayIcon m_trayIcon;
     QWidget m_mainWidget;
@@ -56,4 +61,6 @@ private:
     QLabel m_label;
     Lcu m_lcu;
     QPoint m_CurrentPos;
+    QGroupBox m_preview;
+    QGridLayout pre_layout;
 };

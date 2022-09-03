@@ -2,6 +2,7 @@
 #include <array>
 #include <cstdio>
 #include <iostream>
+#include <map>
 #include <memory>
 #include <regex>
 #include <stdexcept>
@@ -27,6 +28,7 @@ public:
     bool CheckConnect();
     std::vector<RunePage> GetSavePages();
     void SetToken(const std::string& raw);
+    std::vector<std::string> GetPageMsg(int i);
 
 private:
     bool isConnect = false;

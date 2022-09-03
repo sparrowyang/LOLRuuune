@@ -25,10 +25,17 @@ target_link_libraries(Ruuune PRIVATE Qt5::Widgets)
 target_link_libraries(Ruuune PRIVATE mainwnd)
 
 
-SET(CMAKE_EXE_LINKER_FLAGS     "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS") 
-SET(CMAKE_EXE_LINKER_FLAGS     "${CMAKE_EXE_LINKER_FLAGS} /ENTRY:\"mainCRTStartup\"")
+if (CMAKE_BUILD_TYPE MATCHES "Release")
+  SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS") 
+  SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /ENTRY:\"mainCRTStartup\"")
+  SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /level='requireAdministrator' /uiAccess='false'")
+elseif (CMAKE_BUILD_TYPE MATCHES "MinSizeRel")
+    
+elseif(CMAKE_BUILD_TYPE MATCHES "Debug")
+    
+else()
+endif()
 
-SET(CMAKE_EXE_LINKER_FLAGS     "${CMAKE_EXE_LINKER_FLAGS} /level='requireAdministrator' /uiAccess='false'")
 
 
 # set_target_properties(he PROPERTIES

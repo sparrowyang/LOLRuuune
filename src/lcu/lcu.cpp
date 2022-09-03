@@ -134,6 +134,27 @@ bool Lcu::CheckConnect() {
 std::vector<RunePage> Lcu::GetSavePages() {
     return m_RunePages;
 }
+std::vector<std::string> Lcu::GetPageMsg(int i) {
+    std::vector<std::string> res;
+    std::ifstream f("rune.json");
+    if (!f.is_open()) {
+        m_logger.log(LogType::_ERROR, "rune.json open failed.");
+        return {};
+    }
+    nlohmann::json j;
+    try {
+        j = nlohmann::json::parse(f);
+    }
+    catch (std::exception e) {
+        m_logger.log(LogType::_ERROR, e.what());
+    }
+    std::cout << j.dump();
+    // auto id2name = j.get<std::map<int, std::string>>();
+    for (const auto& perk: m_RunePages[i].GetPageData()) {
+        res.emplace_back(j[std::to_string(perk)]);
+    }
+    return res;
+}
 void Lcu::SetToken(const std::string& raw) {
     std::regex re("--remoting-auth-token=(.+?)\" \"--app-port=(\\d+)");
     // m_logger.log(LogType::_INFO, res);
