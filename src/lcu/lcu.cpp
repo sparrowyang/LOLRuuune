@@ -1,12 +1,12 @@
 #include "lcu.h"
 #include <exception>
 #include <fstream>
-#define CPPHTTPLIB_OPENSSL_SUPPORT
 Lcu::Lcu() {
     m_logger = Logger("Lcu", "test.log");
     m_logger.log(LogType::_INFO, "Init Lcu");
 }
-Lcu::~Lcu() {}
+Lcu::~Lcu() {
+}
 std::string Lcu::exec(const char* cmd) {
     // AllocConsole();
     // ShowWindow(GetConsoleWindow(), SW_HIDE);

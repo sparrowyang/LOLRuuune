@@ -23,12 +23,12 @@ public:
             event->accept();
         }
     }
-    void SetMain(QMainWindow* _m) { m = _m; }
+    void SetMain(QMainWindow* _m) {
+        m = _m;
+    }
 };
 class Mainwnd: public QMainWindow,
                public std::enable_shared_from_this<Mainwnd> {
-private:
-    /* data */
 public:
     Mainwnd(/* args */);
     ~Mainwnd();
@@ -45,7 +45,8 @@ private:
     QSize m_size;
     QSystemTrayIcon m_trayIcon;
     QWidget m_mainWidget;
-    QVBoxLayout m_hLayout, m_headerLayout, m_vLayoutTitle;
+    QVBoxLayout m_hLayout;
+    QHBoxLayout m_headerLayout, m_vLayoutTitle;
     QComboBox m_comboBox;
     QPushButton m_hidBtn, m_newBtn, m_delBtn, m_setBtn, m_conBtn, m_exitBtn;
     QStatusBar m_statusBar;

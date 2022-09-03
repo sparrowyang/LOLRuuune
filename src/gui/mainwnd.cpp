@@ -51,12 +51,13 @@ Mainwnd::Mainwnd(/* args */) {
     auto pages = m_lcu.GetSavePages();
     m_comboBox.clear();
     for (auto& i: pages) {
-        m_comboBox.addItem(QString::fromStdString(i.GetName()));
+        m_comboBox.addItem(QString::fromUtf8(i.GetName().c_str()));
     }
     ConnectSignals();
     m_lcu.SetToken(GetToken());
 }
-Mainwnd::~Mainwnd() {}
+Mainwnd::~Mainwnd() {
+}
 void Mainwnd::ConnectSignals() {
     // connect(&m_comboBox,
     //         static_cast<void (QComboBox::*)(const QString&)>(
@@ -143,7 +144,8 @@ std::string Mainwnd::GetToken() {
     p.waitForStarted();
     p.waitForReadyRead();
     p.waitForFinished();
-    QString s = QString::fromLocal8Bit(p.readAllStandardOutput());
-    return s.toStdString();
+    std::string s = std::string(p.readAllStandardOutput().data());
+    return s;
 }
-void Mainwnd::OnClick() {}
+void Mainwnd::OnClick() {
+}

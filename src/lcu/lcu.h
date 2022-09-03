@@ -1,5 +1,4 @@
 #pragma once
-#define CPPHTTPLIB_OPENSSL_SUPPORT
 #include <array>
 #include <cstdio>
 #include <iostream>
@@ -12,7 +11,6 @@
 #include "httplib.h"
 #include "json.h"
 #include "rune_page.h"
-#define CPPHTTPLIB_OPENSSL_SUPPORT
 class RunePage;
 class Lcu {
 public:
