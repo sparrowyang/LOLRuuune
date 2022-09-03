@@ -1,14 +1,14 @@
 <RCC>
     <qresource prefix="/qss">
-        <file>ubuntu.qss</file>
+        <file>static/ubuntu.qss</file>
     </qresource>
     <qresource prefix="/img">
-        <file>ouc.png</file>
-        <file>add.png</file>
-        <file>delete.png</file>
-        <file>done.png</file>
-        <file>hide.png</file>
-        <file>move.png</file>
-        <file>power.png</file>
+        <file>static/ouc.png</file>
+        <file>static/add.png</file>
+        <file>static/delete.png</file>
+        <file>static/done.png</file>
+        <file>static/hide.png</file>
+        <file>static/move.png</file>
+        <file>static/power.png</file>
     </qresource>
 </RCC>

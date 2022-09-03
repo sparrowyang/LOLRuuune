@@ -1,13 +1,13 @@
 #include "mainwnd.h"
 Mainwnd::Mainwnd(/* args */) {
     qDebug() << "Windows Init...";
-    m_icon.addFile(":/img/ouc.png");
-    i_del.addFile(":/img/delete.png");
-    i_hide.addFile(":/img/hide.png");
-    i_exit.addFile(":/img/power.png");
-    i_move.addFile(":/img/move.png");
-    i_done.addFile(":/img/done.png");
-    i_add.addFile(":/img/add.png");
+    m_icon.addFile(":/img/static/ouc.png");
+    i_del.addFile(":/img/static/delete.png");
+    i_hide.addFile(":/img/static/hide.png");
+    i_exit.addFile(":/img/static/power.png");
+    i_move.addFile(":/img/static/move.png");
+    i_done.addFile(":/img/static/done.png");
+    i_add.addFile(":/img/static/add.png");
     setWindowIcon(m_icon);
     setStyleSheet(LoadQss());
     setWindowFlags(Qt::WindowStaysOnTopHint | Qt::Tool | Qt::FramelessWindowHint);
@@ -117,7 +117,7 @@ void Mainwnd::ConnectSignals() {
     });
 }
 QString Mainwnd::LoadQss() {
-    QFile qss(":/qss/ubuntu.qss");
+    QFile qss(":/qss/static/ubuntu.qss");
     if (qss.open(QFile::ReadOnly)) {
         qDebug("Qss open success");
         QString style = QLatin1String(qss.readAll());
